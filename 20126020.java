@@ -1,1 +1,1 @@
-// alo ha alo duoc nha
+// alo ha alo duoc ko
