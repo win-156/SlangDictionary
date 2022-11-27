@@ -1,11 +1,9 @@
-import javax.swing.*;
+// import javax.swing.*;
 
 
 import java.io.*;
-import java.util.Iterator;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;;
+import java.util.*;
+;
 public class Diraction{
 
 
@@ -25,7 +23,8 @@ public class Diraction{
             map.put(splitStr[0], splitStr[1]);
         }
 
-        show(map);
+    //    show(map);
+        randomSlang(map);
         // findDefinition(map, "aaaaaaa");
         // findKey(map, "Anything");
     }
@@ -89,8 +88,23 @@ public class Diraction{
         map.clear();
         readFile("slang.txt");
     }
-    public static void randomSlang(TreeMap<String, String>map){
+    public static String randomSlang(TreeMap<String, String>map){
+        Random ran = new Random();
+        int i = ran.nextInt(map.size()-1);
+
+        return (String)map.keySet().toArray()[i];
+    }
+    public static boolean GameSlang(TreeMap<String, String>map, String option){
         
+        String strSlang = randomSlang(map), strDefini = map.get(strSlang);
+        if (option == strDefini)
+        {
+            return true;
+        }
+        
+        return true;
+
+
     }
 
     public static void main(String []agrs) throws IOException
