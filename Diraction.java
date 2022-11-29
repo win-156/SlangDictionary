@@ -1,175 +1,63 @@
-package SlangDictionary;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeMap;
-
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Diraction{
-    JFrame Jcontain, frameEx1, frameEx2,frameEx3,frameEx4,frameEx5,frameEx6,frameEx7,frameEx8,frameEx9,frameEx10;
-    JButton bt1, bt2, bt3, bt4, bt5,bt6,bt7,bt8,bt9, bt10;
-    JPanel jp1, jp2,jp3,jp4,jp5,jp6,jp7,jp8,jp9,jp10;
-    JLabel jl1, jl2,jl3,jl4,jl5,jl6,jl7,jl8,jl9,jl10;
 
-    public TreeMap<String, ArrayList<String>> getMap() {
-        return map;
+    private TreeMap<String,ArrayList<String>> _map;
+    private TreeMap<String,String> _history;
+    Scanner cinStr = new Scanner(System.in);
+    Scanner cinInt = new Scanner(System.in);
+
+
+
+    public void setHistory(TreeMap<String,String> history) {
+        this._history = history;
+    }
+    public TreeMap<String,String> getHistory() {
+        return _history;
     }
 
-    private TreeMap<String, ArrayList<String>> map;
+
 
     public void setMap(TreeMap<String, ArrayList<String>> map) {
-        this.map = map;
+        this._map = map;
+    }
+    public TreeMap<String, ArrayList<String>> getMap() {
+        return _map;
     }
 
-    public Diraction(){
-        Jcontain = new JFrame();
-        Jcontain.setSize(500,500);
-        Jcontain.setLayout(new GridLayout(5, 5));
-        Jcontain.setDefaultCloseOperation(Jcontain.EXIT_ON_CLOSE);
-        bt1 = new JButton("Execise 1");
-        bt2 = new JButton("Execise 2");
-        bt3 = new JButton("Execise 3");
-        bt4 = new JButton("Execise 4");
-        bt5 = new JButton("Execise 5");
-        bt6 = new JButton("Execise 6");
-        bt7 = new JButton("Execise 7");
-        bt8 = new JButton("Execise 8");
-        bt9 = new JButton("Execise 9");
-        bt10 = new JButton("Execise 10");
-
-        Jcontain.add(bt1);
-        Jcontain.add(bt2);
-        Jcontain.add(bt3);
-        Jcontain.add(bt4);
-        Jcontain.add(bt5);
-        Jcontain.add(bt6);
-        Jcontain.add(bt7);
-        Jcontain.add(bt8);
-        Jcontain.add(bt9);
-        Jcontain.add(bt10);
-
-        Jcontain.setVisible(true);
-        bt1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt5.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt7.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt8.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt9.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ok");
-            }
-        });
-        bt10.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    setMap(readFile("SlangDictionary/slang.txt"));
-                    show(getMap());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-                Execise1();
-            }
-        });
+    public Diraction() throws IOException{
+        setHistory(readFileHistory("history.txt"));
+        setMap(readFileSlang("slang.txt"));
     }
 
-    public void show(TreeMap<String, ArrayList<String>> map) {
-        Set<String> keySet = map.keySet();
-        for (String key : keySet) {
-            System.out.println(key + " - " + map.get(key));
+    public TreeMap<String,String> readFileHistory(String file) throws IOException{
+        BufferedReader fi = new BufferedReader(new FileReader(file));
+        String str = "";
+        TreeMap<String,String> history = new TreeMap<String,String>();
+        
+        while((str = fi.readLine()) != null)
+        {
+            String[] splitStr = str.split("`");
+            history.put(splitStr[0], splitStr[1]);
         }
+        fi.close();
+        return history;
     }
-    public void Execise1() {
-        frameEx1 = new JFrame();
-        frameEx1.setLayout(new FlowLayout());
-        frameEx1.setTitle("Execise 1");
+    public void writeHistory(String file) throws IOException{
 
-        JPanel frameEx1Child = new JPanel();
-        frameEx1Child.setLayout(new GridLayout(1,1));
-        JTextField jSlang = new JTextField();
-        JButton jSearchSlang = new JButton("Search");
+        if(this._history == null)
+            return;
+        BufferedWriter fo = new BufferedWriter(new FileWriter(file));
 
-        frameEx1Child.add(jSlang);
-        frameEx1Child.add(jSearchSlang);
-        frameEx1.add(frameEx1Child);
-
-        jSearchSlang.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TreeMap<String, ArrayList<String>> map = getMap();
-                String []headerStr = {"Key", "Value"};
-                String [][]data = {{"1","2"},{"1","2"}};
-                DefaultTableModel model = new DefaultTableModel(data, headerStr);
-                JTable table = new JTable(model);
-                JButton j = new JButton("okla");
-//                model.insertRow(0, headerStr);
-//                model.insertRow(1, map.get(jSlang.getText()).toArray());
-
-                frameEx1.add(j);
-                frameEx1.add(table);
-                System.out.println(map.get(jSlang.getText()));
-            }
-        });
-
-        frameEx1.setSize(500, 500);
-        frameEx1.setVisible(true);
-
+        Set<String> keySet = this._history.keySet();
+        for (String key : keySet) {
+            fo.write(key + "`" + this._history.get(key) + "\n");
+        }
+        fo.close();
     }
-
-    public TreeMap<String, ArrayList<String>> readFile(String nameFile) throws IOException {
+    public TreeMap<String, ArrayList<String>> readFileSlang(String nameFile) throws IOException {
         BufferedReader fi = new BufferedReader(new FileReader(nameFile));
         String str = "";
         str = fi.readLine();
@@ -182,15 +70,174 @@ public class Diraction{
                 continue;
             }
             String[] splitDefini = splitStr[1].split("\\| ");
-//            System.out.println(str);
             ArrayList<String> strings = new ArrayList<>(Arrays.asList(splitDefini));
             map.put(splitStr[0], strings);
         }
+        fi.close();
         return map;
     }
-    public static void main(String []ags)
+
+    public void show() {
+
+        if(this._map == null)
+        {
+            System.out.println("Dictionary empty!");
+            return;
+        }
+        Set<String> keySet = this._map.keySet();
+        for (String key : keySet) {
+            System.out.println(key + " - " + this._map.get(key));
+        }
+    }
+
+//Ex2
+    public void findDefinition(String keyWord)
     {
-        new Diraction();
+        TreeMap<String, ArrayList<String>> map = getMap();
+        Iterator<String> itr = map.keySet().iterator();
+        while(itr.hasNext()){
+            ArrayList<String> strGet = map.get(itr.next());
+            int length = strGet.size();
+
+            for(int i = 0; i < length; i++)
+            {
+                if(strGet.get(i).contains(keyWord))
+                {
+                    System.out.println(itr.next() + " - " + map.get(itr.next()));
+                    break;
+                }
+            }
+        }
+    }
+//EX1
+    public void findSlangWord(String keyE){
+        TreeMap<String, ArrayList<String>> map = getMap();
+        System.out.println( keyE+" - "+ map.get(keyE));
+        addHistory(keyE);
+    }
+    
+//EX3
+    public void addHistory(String slangWord){
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
+        this._history.put(timeStamp,slangWord);
+    }
+    public void showHistory(){
+
+        if(this._history == null){
+            System.out.println("History empty!");
+            return;
+        }
+        Set<String> keySet = this._history.keySet();
+        for (String key : keySet) {
+            System.out.println(key + " - " + this._history.get(key));
+        }
+    }
+
+    public static void addSlang(TreeMap<String, String>map, String slangWord, String Definition)
+    {
+        if(map.get(slangWord) == null)
+        {
+            map.put(slangWord, Definition);
+        }
+        else
+        {
+            System.out.println("Da ton tai!");
+        }
+    }
+    public  void editSlang(String slangWord, String Definition)
+    {
+        TreeMap<String,ArrayList<String>> map = getMap();
+
+        if(map.get(slangWord) == null)
+        {   
+            ArrayList<String> definition = new ArrayList<>();
+            definition.add(Definition);
+            map.put(slangWord, definition);
+        }
+        else
+        {
+            System.out.print("Đã tồn tại: " + slangWord + " (Duplication:1, override:2)");
+            String choose = cinStr.nextLine();
+            if(choose == "1")
+            {
+                map.get(slangWord).add(Definition);
+            }
+            else{
+                map.put(slangWord, new ArrayList<String>(Arrays.asList(Definition)));
+            }
+        }
+        setMap(map);
+    }
+
+    public static void deleteSlang(TreeMap<String, String>map, String slangWord)
+    {
+        if(map.get(slangWord) != null)
+        {
+            map.remove(slangWord);
+        }
+        else
+        {
+            System.out.println("Khong ton tai");
+        }
+    }
+    public void resetSlang() throws IOException
+    {
+        setMap(readFileSlang("slang.txt"));
+    }
+    public String randomSlang(){
+
+        TreeMap<String, ArrayList<String>> map = getMap();
+        Random ran = new Random();
+        int i = ran.nextInt(map.size()-1);
+
+        return (String)map.keySet().toArray()[i];
+    }
+    // public boolean GameSlang(String option){
         
+    //     String strSlang = randomSlang(), strDefini = map.get(strSlang);
+    //     if (option == strDefini)
+    //     {
+    //         return true;
+    //     }
+        
+    //     return true;
+
+
+    // }
+
+    public static void main(String []agrs) throws IOException
+    {
+        Diraction a = new Diraction();
+        
+        System.out.println("1) Hiển thị toàn bộ từ điển\n"
+                           + "1) Tìm kiếm theo slang word\n"
+                           + "2) tìm kiếm theo definition\n"
+                           + "3) Hiển thị History!\n"
+                           + "4) Add 1 slang words mới\n"
+                           + "5) Edit 1 slang word\n"
+                           + "6) Delete 1 slang word\n"
+                           + "7) Reset danh sách slang words gốc\n"
+                           + "8) Random 1 slang word\n"
+                           + "9) Game slang word\n"
+                           + "10) Game definition\n");  
+
+        int chooseEx = a.cinInt.nextInt();
+        String StrSearch;
+        switch(chooseEx){
+            case 1:
+                System.out.print("input Slang Word:");
+                StrSearch = a.cinStr.nextLine();
+                a.findSlangWord(StrSearch);
+                break;
+            case 2:
+                
+            default:
+                break;
+        }
+
+        a.showHistory();
+        // a.writeHistory("history.txt");
+        // a.show();
+
     }
 }
