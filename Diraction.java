@@ -192,18 +192,18 @@ public class Diraction{
 
         return (String)map.keySet().toArray()[i];
     }
-    // public boolean GameSlang(String option){
+    public boolean GameSlang(String option){
         
-    //     String strSlang = randomSlang(), strDefini = map.get(strSlang);
-    //     if (option == strDefini)
-    //     {
-    //         return true;
-    //     }
+        String strSlang = randomSlang(), strDefini = map.get(strSlang);
+        if (option == strDefini)
+        {
+            return true;
+        }
         
-    //     return true;
+        return true;
 
 
-    // }
+    }
 
     public static void main(String []agrs) throws IOException
     {
